@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/botswana-harvard/edc-identifier.svg?branch=develop)](https://travis-ci.org/botswana-harvard/edc-identifier)
+
 # edc-identifier
 Manage identifier creation in the Edc
 
