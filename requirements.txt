@@ -1,2 +1,4 @@
 Django==1.8.1
 Unipath==1.1
+edc-base==0.1.0
+edc-device==0.1.0
