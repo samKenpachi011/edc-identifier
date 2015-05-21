@@ -8,7 +8,6 @@ SOURCE_ROOT = Path(os.path.dirname(os.path.realpath(__file__))).ancestor(1)
 if __name__ == "__main__":
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "edc_identifier.settings")
     sys.path.insert(1, SOURCE_ROOT.child('edc-base'))
-    sys.path.insert(1, SOURCE_ROOT.child('edc-sync'))
     sys.path.insert(1, SOURCE_ROOT.child('edc-device'))
     sys.path.insert(1, SOURCE_ROOT.child('edc-entry'))
     from django.core.management import execute_from_command_line
