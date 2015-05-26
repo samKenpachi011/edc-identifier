@@ -1,4 +1,4 @@
 Django==1.8.2
 Unipath==1.1
-edc-base==0.1.0
-edc-device==0.1.0
+-e git+https://github.com/botswana-harvard/edc-base@develop#egg=edc-base
+-e git+https://github.com/botswana-harvard/edc-device@develop#egg=edc-device
