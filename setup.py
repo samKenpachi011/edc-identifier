@@ -21,11 +21,7 @@ setup(
     description='Manage identifiers in the Edc',
     long_description=README,
     zip_safe=False,
-    keywords='django contenttype',
-    install_requires=[
-        'edc-base>=0.1',
-        'edc-device>=0.1',
-    ],
+    keywords='django base classes for identifiers',
     classifiers=[
         'Environment :: Web Environment',
         'Framework :: Django',
