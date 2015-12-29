@@ -7,6 +7,8 @@
 
 Manage identifier creation in the Edc
 
+(folder subject was imported from edc.core.identifier, along with models `IdentifierTracker`, `Sequence` and `SubjectIdentifier` and needs work)
+
 Installation
 ------------
 
