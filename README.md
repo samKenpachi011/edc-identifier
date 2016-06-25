@@ -12,14 +12,20 @@ Manage identifier creation in the Edc
 Installation
 ------------
 
-	pip install edc-identifier
+	pip install git+https://github.com/botswana-harvard/edc-identifier@develop#egg=edc_identifier
 
 Add to settings:
 
-	# modulus to calculate check digit
-	IDENTIFIER_MODULUS = 7
-	# prefix for all participant identifiers
-	IDENTIFIER_PREFIX = '066'
+    # modulus to calculate check digit
+    IDENTIFIER_MODULUS = 7
+    # prefix for all participant identifiers
+    IDENTIFIER_PREFIX = '066'
+
+    INSTALLED_APPS = [
+        ...
+        'edc_identifier.apps.EdcIdentifierAppConfig',
+        ...
+    ]
 
 	
 Base classes for identifiers.
