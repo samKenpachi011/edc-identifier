@@ -1,37 +1,47 @@
 [![Build Status](https://travis-ci.org/botswana-harvard/edc-identifier.svg?branch=develop)](https://travis-ci.org/botswana-harvard/edc-identifier)
 [![Coverage Status](https://coveralls.io/repos/botswana-harvard/edc-identifier/badge.svg)](https://coveralls.io/r/botswana-harvard/edc-identifier)
 
-
-
 # edc-identifier
 
 Manage identifier creation in the Edc
 
 (folder subject was imported from edc.core.identifier, along with models `IdentifierTracker`, `Sequence` and `SubjectIdentifier` and needs work)
 
-Installation
-------------
+##Installation
 
 	pip install git+https://github.com/botswana-harvard/edc-identifier@develop#egg=edc_identifier
 
 Add to settings:
 
-    # modulus to calculate check digit
-    IDENTIFIER_MODULUS = 7
-    # prefix for all participant identifiers
-    IDENTIFIER_PREFIX = '066'
-
     INSTALLED_APPS = [
         ...
-        'edc_identifier.apps.EdcIdentifierAppConfig',
+        'edc_identifier.apps.AppConfig',
         ...
     ]
 
-	
-Base classes for identifiers.
+If you need to change the `AppConfig` attributes declare a new class in your `apps.py` and modify settings:
 
-Numeric Identifiers
--------------------
+    from django.apps import AppConfig as DjangoAppConfig
+    from edc_identifier.apps import AppConfig as EdcIdentifierAppConfigParent
+    
+    class AppConfig(DjangoAppConfig):
+        name = 'myapp'
+    
+    class EdcIdentifierAppConfig(EdcIdentifierAppConfigParent):
+        identifier_prefix = '066'
+ 
+... then in settings:
+
+    INSTALLED_APPS = [
+        ...
+        'myapp.apps.EdcIdentifierAppConfig',
+        'myapp.apps.AppConfig',
+    ]
+ 
+	
+## Base classes for identifiers.
+
+### Numeric Identifiers
 
 The numeric identifier uses a check-digit and may have a separator if specified.
 
@@ -70,8 +80,7 @@ The numeric identifier uses a check-digit and may have a separator if specified.
 	MyIdentifier('3200-0000-3223-8')
 	
 
-Alphanumeric Identifiers
-------------------------
+### Alphanumeric Identifiers
 
 	from edc_identifier import AlphanumericIdentifier
 
@@ -114,8 +123,7 @@ The identifier increments on the numeric sequence then the alpha:
 
 See `getresults-receive` for sample usage with `settings` and a `History` model.
 
-Short Identifiers
------------------
+### Short Identifiers
 
 Creates a small identifier that is almost unique, for example, across 25 Edc devices in a community. We use these as sample requisition identifiers that are transcribed manually onto a tube from the Edc screen in a household. Once the sample is received at the local lab it is allocated a laboratory-wide unique specimen identifier.
 
@@ -213,8 +221,7 @@ Add more to the prefix, such as device code and community code.
 			pass
 
 			
-Batch Identifier
-----------------
+### Batch Identifier
 
 To have an identifier prefixed by the current date stamp:
 
@@ -227,7 +234,3 @@ To have an identifier prefixed by the current date stamp:
 	BatchIdentifier('201508170001')
 	>>> next(id)
 	'201508170002'
-
-	
-	
-	
