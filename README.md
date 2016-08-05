@@ -7,7 +7,7 @@ Manage identifier creation in the Edc
 
 (folder subject was imported from edc.core.identifier, along with models `IdentifierTracker`, `Sequence` and `SubjectIdentifier` and needs work)
 
-##Installation
+## Installation
 
 	pip install git+https://github.com/botswana-harvard/edc-identifier@develop#egg=edc_identifier
 
