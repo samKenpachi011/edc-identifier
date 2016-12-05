@@ -37,8 +37,102 @@ If you need to change the `AppConfig` attributes declare a new class in your `ap
         'myapp.apps.EdcIdentifierAppConfig',
         'myapp.apps.AppConfig',
     ]
- 
+
+## Identifiers for research subjects
 	
+### Subject Identifiers
+
+For example:
+
+    from edc_identifier.subject_identifier import SubjectIdentifier
+    
+    subject_identifier = SubjectIdentifier(
+        subject_type_name='subject',
+        model='edc_example.enrollment',
+        protocol='000',
+        device_id='99',
+        study_site='40')
+    >>> subject_identifier.identifier
+    '000-40990001-6'
+    
+
+### Maternal and Infant Identifiers
+
+See also, `edc_pregnancy` model mixins `DeliveryMixin`, `BirthMixin`. 
+
+For example:
+
+    from edc_identifier.maternal_identifier import MaternalIdentifier
+
+    maternal_identifier = MaternalIdentifier(
+        subject_type_name='maternal',
+        model='edc_example.enrollment',
+        study_site='40',
+        last_name='Carter')
+    
+    >>> maternal_identifier.identifier
+    '000-40990001-6'
+    
+Add infants
+
+    >>> maternal_identifier.deliver(2, model='edc_example.maternallabdel')
+    >>> [infant.identifier for infant in maternal_identifier.infants]
+    ['000-40990001-6-25', '000-40990001-6-26']
+
+`maternal_identifier.infants` is a list of `InfantIdentifier` instances
+    
+Reload class:
+    
+    >>> maternal_identifier = MaternalIdentifier(identifier='000-40990001-6')
+    >>> maternal_identifier.identifier
+    '000-40990001-6'
+    >>> [infant.identifier for infant in maternal_identifier.infants]
+    ['000-40990001-6-25', '000-40990001-6-26']
+    
+Only allocate an identifier to one infant of twins:
+
+    >>> maternal_identifier.deliver(2, model='edc_example.maternallabdel', birth_orders='2')
+    >>> [infant.identifier for infant in maternal_identifier.infants]
+    [None, '000-40990001-6-26']
+
+Of triplets, allocate identifiers to the 2nd and 3rd infants only:
+
+    >>> maternal_identifier.deliver(3, model='edc_example.maternallabdel', birth_orders='2,3')
+    >>> [infant.identifier for infant in maternal_identifier.infants]
+    [None, '000-40990001-6-37', '000-40990001-6-38']
+
+
+## Research subject identifier classes can create a Registered Subject instance
+
+See also `edc_registration`
+
+By default, `MaternalIdentifier` and `InfantIdentifier` create `RegisteredSubject` instances that can be updated with full details later with the Delivery and Birth models. Continuing from above:
+
+    maternal_identifier = MaternalIdentifier(identifier='000-40990001-6')
+    maternal_identifier.deliver(1, model='edc_example.maternallabdel', create_registration=True)
+
+    # mother
+    >>> RegisteredSubject.objects.get(subject_identifier='000-40990001-6')
+    <RegisteredSubject '000-40990001-6'>
+
+    # infant is linked to the mother
+    >>> RegisteredSubject.objects.get(linked_identifier='000-40990001-6')
+    <RegisteredSubject '000-40990001-6-10'>
+
+    # infant
+    >>> obj = RegisteredSubject.objects.get(subject_identifier='000-40990001-6-10')
+    >>> obj.first_name
+    'Baby1Carter'  ## generates a temp name until Birth form is added with complete information.    
+    >>> obj.relative_identifier
+    '000-40990001-6'
+
+
+### Subject type "Caps" are enforced by the research subject identifier classes
+
+See also `edc_protocol`
+
+Limits on the number of identifiers that can be allocated per subject type are enforced when identifiers are created. `edc_identifier` reads the "caps" from `edc_protocol.apps.AppConfig` linking the subject type, e.g. `subject`, or `maternal` or `infant`, to the relevant cap and not allowing the number of allocated identifiers to exceed the cap.
+
 ## Base classes for identifiers.
 
 ### Numeric Identifiers
