@@ -3,9 +3,7 @@
 
 # edc-identifier
 
-Manage identifier creation in the Edc
-
-(folder subject was imported from edc.core.identifier, along with models `IdentifierTracker`, `Sequence` and `SubjectIdentifier` and needs work)
+Add research subject identifiers and other useful identifiers to your project
 
 ## Installation
 
@@ -17,25 +15,6 @@ Add to settings:
         ...
         'edc_identifier.apps.AppConfig',
         ...
-    ]
-
-If you need to change the `AppConfig` attributes declare a new class in your `apps.py` and modify settings:
-
-    from django.apps import AppConfig as DjangoAppConfig
-    from edc_identifier.apps import AppConfig as EdcIdentifierAppConfigParent
-    
-    class AppConfig(DjangoAppConfig):
-        name = 'myapp'
-    
-    class EdcIdentifierAppConfig(EdcIdentifierAppConfigParent):
-        identifier_prefix = '066'
- 
-... then in settings:
-
-    INSTALLED_APPS = [
-        ...
-        'myapp.apps.EdcIdentifierAppConfig',
-        'myapp.apps.AppConfig',
     ]
 
 ## Identifiers for research subjects
@@ -105,6 +84,8 @@ Of triplets, allocate identifiers to the 2nd and 3rd infants only:
 ## Research subject identifier classes can create a Registered Subject instance
 
 See also `edc_registration`
+
+`SubjectIdentifier` by default does not create a `RegisteredSubject` instance unless `create_registration=True`.
 
 By default, `MaternalIdentifier` and `InfantIdentifier` create `RegisteredSubject` instances that can be updated with full details later with the Delivery and Birth models. Continuing from above:
 
