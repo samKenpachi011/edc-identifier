@@ -1,11 +1,6 @@
-Django==1.6
-python-dateutil
-Unipath
-GitPython
+Django
 factory-boy
 pytz
-git+https://github.com/botswana-harvard/edc-base@master#egg=edc-base
-git+https://github.com/botswana-harvard/edc-device@master#egg=edc-device
-git+https://github.com/botswana-harvard/edc-sync@master#egg=edc-sync
-git+https://github.com/botswana-harvard/edc-crypto-fields@develop#egg=edc-crypto-fields
-git+https://github.com/erikvw/django-revision@master#egg=django-revision
+git+https://github.com/erikvw/django-revision@develop#egg=django-revision
+git+https://github.com/botswana-harvard/edc-base@develop#egg=edc-base
+git+https://github.com/botswana-harvard/edc-device@develop#egg=edc-device

@@ -1,31 +1,122 @@
 [![Build Status](https://travis-ci.org/botswana-harvard/edc-identifier.svg?branch=develop)](https://travis-ci.org/botswana-harvard/edc-identifier)
 [![Coverage Status](https://coveralls.io/repos/botswana-harvard/edc-identifier/badge.svg)](https://coveralls.io/r/botswana-harvard/edc-identifier)
 
-
-
 # edc-identifier
 
-Manage identifier creation in the Edc
+Add research subject identifiers and other useful identifiers to your project
 
-(folder subject was imported from edc.core.identifier, along with models `IdentifierTracker`, `Sequence` and `SubjectIdentifier` and needs work)
+## Installation
 
-Installation
-------------
-
-	pip install edc-identifier
+	pip install git+https://github.com/botswana-harvard/edc-identifier@develop#egg=edc_identifier
 
 Add to settings:
 
-	# modulus to calculate check digit
-	IDENTIFIER_MODULUS = 7
-	# prefix for all participant identifiers
-	IDENTIFIER_PREFIX = '066'
+    INSTALLED_APPS = [
+        ...
+        'edc_identifier.apps.AppConfig',
+        ...
+    ]
 
+## Identifiers for research subjects
 	
-Base classes for identifiers.
+### Subject Identifiers
 
-Numeric Identifiers
--------------------
+For example:
+
+    from edc_identifier.subject_identifier import SubjectIdentifier
+    
+    subject_identifier = SubjectIdentifier(
+        subject_type_name='subject',
+        model='edc_example.enrollment',
+        protocol='000',
+        device_id='99',
+        study_site='40')
+    >>> subject_identifier.identifier
+    '000-40990001-6'
+    
+
+### Maternal and Infant Identifiers
+
+See also, `edc_pregnancy` model mixins `DeliveryMixin`, `BirthMixin`. 
+
+For example:
+
+    from edc_identifier.maternal_identifier import MaternalIdentifier
+
+    maternal_identifier = MaternalIdentifier(
+        subject_type_name='maternal',
+        model='edc_example.enrollment',
+        study_site='40',
+        last_name='Carter')
+    
+    >>> maternal_identifier.identifier
+    '000-40990001-6'
+    
+Add infants
+
+    >>> maternal_identifier.deliver(2, model='edc_example.maternallabdel')
+    >>> [infant.identifier for infant in maternal_identifier.infants]
+    ['000-40990001-6-25', '000-40990001-6-26']
+
+`maternal_identifier.infants` is a list of `InfantIdentifier` instances
+    
+Reload class:
+    
+    >>> maternal_identifier = MaternalIdentifier(identifier='000-40990001-6')
+    >>> maternal_identifier.identifier
+    '000-40990001-6'
+    >>> [infant.identifier for infant in maternal_identifier.infants]
+    ['000-40990001-6-25', '000-40990001-6-26']
+    
+Only allocate an identifier to one infant of twins:
+
+    >>> maternal_identifier.deliver(2, model='edc_example.maternallabdel', birth_orders='2')
+    >>> [infant.identifier for infant in maternal_identifier.infants]
+    [None, '000-40990001-6-26']
+
+Of triplets, allocate identifiers to the 2nd and 3rd infants only:
+
+    >>> maternal_identifier.deliver(3, model='edc_example.maternallabdel', birth_orders='2,3')
+    >>> [infant.identifier for infant in maternal_identifier.infants]
+    [None, '000-40990001-6-37', '000-40990001-6-38']
+
+
+## Research subject identifier classes can create a Registered Subject instance
+
+See also `edc_registration`
+
+`SubjectIdentifier` by default does not create a `RegisteredSubject` instance unless `create_registration=True`.
+
+By default, `MaternalIdentifier` and `InfantIdentifier` create `RegisteredSubject` instances that can be updated with full details later with the Delivery and Birth models. Continuing from above:
+
+    maternal_identifier = MaternalIdentifier(identifier='000-40990001-6')
+    maternal_identifier.deliver(1, model='edc_example.maternallabdel', create_registration=True)
+
+    # mother
+    >>> RegisteredSubject.objects.get(subject_identifier='000-40990001-6')
+    <RegisteredSubject '000-40990001-6'>
+
+    # infant is linked to the mother
+    >>> RegisteredSubject.objects.get(linked_identifier='000-40990001-6')
+    <RegisteredSubject '000-40990001-6-10'>
+
+    # infant
+    >>> obj = RegisteredSubject.objects.get(subject_identifier='000-40990001-6-10')
+    >>> obj.first_name
+    'Baby1Carter'  ## generates a temp name until Birth form is added with complete information.    
+    >>> obj.relative_identifier
+    '000-40990001-6'
+
+
+### Subject type "Caps" are enforced by the research subject identifier classes
+
+See also `edc_protocol`
+
+Limits on the number of identifiers that can be allocated per subject type are enforced when identifiers are created. `edc_identifier` reads the "caps" from `edc_protocol.apps.AppConfig` linking the subject type, e.g. `subject`, or `maternal` or `infant`, to the relevant cap and not allowing the number of allocated identifiers to exceed the cap.
+
+## Base classes for identifiers.
+
+### Numeric Identifiers
 
 The numeric identifier uses a check-digit and may have a separator if specified.
 
@@ -64,8 +155,7 @@ The numeric identifier uses a check-digit and may have a separator if specified.
 	MyIdentifier('3200-0000-3223-8')
 	
 
-Alphanumeric Identifiers
-------------------------
+### Alphanumeric Identifiers
 
 	from edc_identifier import AlphanumericIdentifier
 
@@ -108,8 +198,7 @@ The identifier increments on the numeric sequence then the alpha:
 
 See `getresults-receive` for sample usage with `settings` and a `History` model.
 
-Short Identifiers
------------------
+### Short Identifiers
 
 Creates a small identifier that is almost unique, for example, across 25 Edc devices in a community. We use these as sample requisition identifiers that are transcribed manually onto a tube from the Edc screen in a household. Once the sample is received at the local lab it is allocated a laboratory-wide unique specimen identifier.
 
@@ -207,8 +296,7 @@ Add more to the prefix, such as device code and community code.
 			pass
 
 			
-Batch Identifier
-----------------
+### Batch Identifier
 
 To have an identifier prefixed by the current date stamp:
 
@@ -221,7 +309,3 @@ To have an identifier prefixed by the current date stamp:
 	BatchIdentifier('201508170001')
 	>>> next(id)
 	'201508170002'
-
-	
-	
-	
