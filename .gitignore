@@ -1,12 +1,12 @@
-edc_identifier/migrations/*
-test-*
-db.sqlite3
-# Byte-compiled / optimized / DLL files
-__pycache__/
-*.py[cod]
 .settings
 .project
 .pydevproject
+test-*
+db.sqlite3
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
 _build/
 # C extensions
 *.so
