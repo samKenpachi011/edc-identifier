@@ -5,3 +5,4 @@ git+https://github.com/clinicedc/edc-device@develop#egg=edc-device
 git+https://github.com/clinicedc/edc-protocol@develop#egg=edc-protocol
 git+https://github.com/clinicedc/edc-registration@develop#egg=edc-registration
 git+https://github.com/clinicedc/edc-constants@develop#egg=edc-constants
+git+https://github.com/clinicedc/edc-model-admin@develop#egg=edc-model-admin

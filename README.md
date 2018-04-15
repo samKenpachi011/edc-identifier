@@ -1,13 +1,11 @@
-[![Build Status](https://travis-ci.org/botswana-harvard/edc-identifier.svg?branch=develop)](https://travis-ci.org/botswana-harvard/edc-identifier)
-[![Coverage Status](https://coveralls.io/repos/botswana-harvard/edc-identifier/badge.svg)](https://coveralls.io/r/botswana-harvard/edc-identifier)
+[![Build Status](https://travis-ci.org/clinicedc/edc-identifier.svg?branch=develop)](https://travis-ci.org/clinicedc/edc-identifier)
+[![Coverage Status](https://coveralls.io/repos/clinicedc/edc-identifier/badge.svg)](https://coveralls.io/r/clinicedc/edc-identifier)
 
 # edc-identifier
 
 Add research subject identifiers and other useful identifiers to your project
 
 ## Installation
-
-	pip install git+https://github.com/botswana-harvard/edc-identifier@develop#egg=edc_identifier
 
 Add to settings:
 
