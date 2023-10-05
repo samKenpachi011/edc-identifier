@@ -19,9 +19,9 @@ install:
 - pip install coveralls
 
 before_script:
-- flake8 edc_identifier
 - pip uninstall pycrypto
 - pip install pycryptodome
+- flake8 edc_identifier
 - mysql -e 'create database edc character set utf8;'
 
 script:
