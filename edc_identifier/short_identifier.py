@@ -64,9 +64,7 @@ class ShortIdentifier:
             self.prefix_pattern = re.compile(self.prefix_pattern)
 
         if not self.prefix and self.prefix_pattern:
-            raise ShortIdentifierPrefixError(
-                f'Prefix does not match prefix pattern. '
-                f'Got prefix=None.')
+            raise ShortIdentifierPrefixError('Prefix does not match prefix pattern Got prefix=None.')
         elif self.prefix and not self.prefix_pattern.match(self.prefix):
             raise ShortIdentifierPrefixError(
                 f'Prefix does not match prefix pattern. '
