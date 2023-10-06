@@ -38,8 +38,6 @@ jobs:
           flake8
           python manage.py check
 
-      - name: Coveralls GitHub Action
-        uses: coverallsapp/github-action@v2
 
       - name: Run Tests
         run: |
@@ -55,3 +53,6 @@ jobs:
         run: |
           coverage xml
           bash <(curl -s https://codecov.io/bash) -t ${{ secrets.CODECOV_TOKEN }}
+
+      - name: Coveralls GitHub Action
+        uses: coverallsapp/github-action@v2
