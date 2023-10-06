@@ -1,11 +1,7 @@
 <!-- [![Build Status](https://travis-ci.org/clinicedc/edc-identifier.svg?branch=develop)](https://travis-ci.org/clinicedc/edc-identifier)
 [![Coverage Status](https://coveralls.io/repos/clinicedc/edc-identifier/badge.svg)](https://coveralls.io/r/clinicedc/edc-identifier) -->
-
-
 [![Build Status](https://app.travis-ci.com/samKenpachi011/edc-identifier.svg?branch=develop)](https://app.travis-ci.com/samKenpachi011/edc-identifier)
-
-<!-- [![Coverage Status](https://coveralls.io/repos/github/samKenpachi011/edc-identifier/badge.svg?branch=develop)](https://coveralls.io/github/samKenpachi011/edc-identifier?branch=develop) -->
-[![Coverage Status](https://coveralls.io/repos/github/samKenpachi011/edc-identifier/badge.svg?branch=develop&cache=buster)](https://coveralls.io/github/samKenpachi011/edc-identifier?branch=develop)
+[![Coverage Status](https://coveralls.io/repos/github/samKenpachi011/edc-identifier/badge.svg?branch=develop)](https://coveralls.io/github/samKenpachi011/edc-identifier?branch=develop)
 
 
 [![Language](https://img.shields.io/badge/Language-Python-blue.svg)](https://www.python.org/)

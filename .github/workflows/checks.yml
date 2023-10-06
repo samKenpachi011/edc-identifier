@@ -41,7 +41,7 @@ jobs:
 
       - name: Run Tests
         run: |
-          coverage run manage.py test
+          coverage run --source=edc_identifier -m pytest
           coveralls
 
       - name: Upload coverage reports to Codecov
@@ -54,5 +54,5 @@ jobs:
           coverage xml
           bash <(curl -s https://codecov.io/bash) -t ${{ secrets.CODECOV_TOKEN }}
 
-      - name: Coveralls GitHub Action
-        uses: coverallsapp/github-action@v2
+      # - name: Coveralls GitHub Action
+      #   uses: coverallsapp/github-action@v2
