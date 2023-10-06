@@ -31,15 +31,20 @@ jobs:
           pip install -r requirements.txt
           pip install pycryptodome
           pip install flake8 Django coverage
+          pip install coveralls codecov
 
       - name: Run Flake8 Lint and Check
         run: |
           flake8
           python manage.py check
 
+      - name: Coveralls GitHub Action
+        uses: coverallsapp/github-action@v2
+
       - name: Run Tests
         run: |
           coverage run manage.py test
+          coveralls
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
