@@ -46,6 +46,11 @@ jobs:
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
 
+      - name: Upload to Coveralls
+        uses: coverallsapp/github-action@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path-to-lcov: ./coverage.xml
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
