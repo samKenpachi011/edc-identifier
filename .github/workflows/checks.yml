@@ -41,7 +41,7 @@ jobs:
 
       - name: Run Tests
         run: |
-          coverage run --source=edc_identifier -m pytest
+          coverage run --source=edc_identifier manage.py test
           coveralls
 
       - name: Upload coverage reports to Codecov
